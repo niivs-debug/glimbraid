@@ -1,0 +1,133 @@
+{
+  "reports": [
+    {
+      "chapter": "night",
+      "tiles": 9,
+      "color": "linear-gradient(145deg, rgba(36, 71, 95, 0.79), rgba(8, 25, 41, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 224.25,
+        "width": 340,
+        "height": 340,
+        "top": 224.25,
+        "right": 350,
+        "bottom": 564.25,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "forest",
+      "tiles": 25,
+      "color": "linear-gradient(145deg, rgba(54, 92, 67, 0.79), rgba(9, 31, 24, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 212.15625,
+        "width": 340,
+        "height": 340,
+        "top": 212.15625,
+        "right": 350,
+        "bottom": 552.15625,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "frost",
+      "tiles": 25,
+      "color": "linear-gradient(145deg, rgba(56, 91, 112, 0.79), rgba(12, 37, 53, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "rav",
+      "tiles": 25,
+      "color": "linear-gradient(145deg, rgba(97, 71, 48, 0.79), rgba(35, 26, 22, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "aurora",
+      "tiles": 25,
+      "color": "linear-gradient(145deg, rgba(39, 91, 85, 0.79), rgba(10, 37, 45, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "stellar",
+      "tiles": 25,
+      "color": "linear-gradient(145deg, rgba(66, 71, 111, 0.79), rgba(20, 27, 53, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "solar",
+      "tiles": 36,
+      "color": "linear-gradient(145deg, rgba(102, 83, 48, 0.79), rgba(41, 32, 23, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    },
+    {
+      "chapter": "weave",
+      "tiles": 36,
+      "color": "linear-gradient(145deg, rgba(89, 68, 102, 0.79), rgba(35, 23, 46, 0.9)), url(\"http://glim.local/slate.webp\")",
+      "rect": {
+        "x": 10,
+        "y": 202.359375,
+        "width": 340,
+        "height": 340,
+        "top": 202.359375,
+        "right": 350,
+        "bottom": 542.359375,
+        "left": 10
+      },
+      "horizontalOverflow": false
+    }
+  ],
+  "errors": []
+}

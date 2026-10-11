@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const handlers={},events=[],calls=[],product={id:'glimbraid_full_game',getOffer:()=>({pricingPhases:[{price:'€3.99'}],order:async()=>orderError})};let orderError,owned=false,queryError=false;
+const store={register:p=>calls.push(['register',p]),when:()=>new Proxy({}, {get:(_,key)=>fn=>{handlers[key]=fn;return store.when();}}),error:fn=>handlers.error=fn,initialize:async()=>[],get:()=>product,update:async()=>{},restorePurchases:async()=>{},};
+const document={addEventListener(){},visibilityState:'visible'},window={addEventListener(){}};
+const context={Capacitor:{isNativePlatform:()=>true,getPlatform:()=> 'android',registerPlugin:()=>({query:async()=>{calls.push(['query']);if(queryError)throw Error('offline');return{owned};}})},store,ProductType:{NON_CONSUMABLE:'nonconsumable'},Platform:{GOOGLE_PLAY:'google',APPLE_APPSTORE:'apple'},ErrorCode:{PAYMENT_CANCELLED:1},document,window,setTimeout,clearTimeout,Promise,Error,Set};
+vm.runInNewContext(fs.readFileSync('native/purchases.js','utf8').replace(/^import .*;\n/gm,''),context);
+await window.GlimbraidStore.initialize(product.id,e=>events.push(e));assert(events.some(e=>e.kind==='product'&&e.price==='€3.99'));assert(events.some(e=>e.kind==='entitlement'&&!e.owned));
+const transaction={products:[{id:product.id}],transactionId:'t1',finish:async()=>{calls.push(['finish']);owned=true;}};
+await handlers.approved(transaction);assert.deepEqual(calls.slice(-2).map(c=>c[0]),['finish','query']);assert(events.at(-1).owned);
+owned=false;queryError=true;const before=events.length;await handlers.approved({...transaction,transactionId:'t2',finish:async()=>{}});assert.equal(events.at(-1).kind,'error');assert(!events.slice(before).some(e=>e.kind==='entitlement'),'Query failure never revokes a cached purchase');
+queryError=false;orderError={code:1};await assert.rejects(()=>window.GlimbraidStore.buy(),e=>e.cancelled===true);orderError=undefined;await window.GlimbraidStore.buy();assert.equal(events.at(-1).kind,'pending');await window.GlimbraidStore.restore();assert.equal(events.at(-1).owned,false);
+console.log('PASS: native adapter uses store price, finishes before ownership refresh, rejects cancellation, preserves ownership on query errors, and restores authoritative state.');

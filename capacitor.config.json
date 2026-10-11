@@ -1,0 +1,18 @@
+{
+  "appId": "no.bjerkholtstudio.sporlys",
+  "appName": "Glimbraid",
+  "webDir": "dist",
+  "backgroundColor": "#091622",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost"
+  },
+  "android": {
+    "backgroundColor": "#091622",
+    "allowMixedContent": false
+  },
+  "ios": {
+    "backgroundColor": "#091622",
+    "contentInset": "automatic"
+  }
+}

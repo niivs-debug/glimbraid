@@ -1,0 +1,37 @@
+import fs from 'node:fs';
+import {chapters} from '../dist/engine.mjs';
+import assert from 'node:assert/strict';
+const events={},nativeEvents={},modalEvents={};let stored=null,now=0,interval;
+const root={innerHTML:'',classList:{toggle(){}}};
+const modal={innerHTML:'',open:false,showModal(){this.open=true},close(){this.open=false},addEventListener(k,f){modalEvents[k]=f}};
+const status={textContent:''},button={disabled:false};
+globalThis.document={hidden:false,documentElement:{lang:'nb'},querySelector(s){return s==='#app'?root:s==='#modal'?modal:s==='.world-lights'?{innerHTML:''}:s==='#backupStatus'?status:s==='[data-action="exportBackup"]'?button:null;},addEventListener(k,f){events[k]=f}};
+globalThis.addEventListener=(k,f)=>nativeEvents[k]=f;
+Object.defineProperty(globalThis,'navigator',{value:{language:'nb'},configurable:true});
+globalThis.localStorage={getItem:()=>stored,setItem:(_,v)=>stored=v};
+globalThis.performance={now:()=>now};globalThis.setInterval=f=>interval=f;
+const click=dataset=>events.click({target:{closest:()=>({dataset,disabled:false})}});
+await import('../dist/app.mjs');
+click({action:'backup'});let options;
+globalThis.SporlysNative={saveBackup:async x=>{options=x;return {saved:false};}};
+click({action:'exportBackup'});await new Promise(r=>setImmediate(r));
+assert.equal(JSON.parse(options.content).format,'sporlys-backup');assert.match(options.name,/^glimbraid-sikkerhetskopi-[0-9-]+\.json$/);assert(!JSON.parse(stored).lastBackup);assert(status.textContent.includes('avbrutt'));assert(!button.disabled);
+globalThis.SporlysNative.saveBackup=async()=>{throw Error('cancelled destination');};
+click({action:'exportBackup'});await new Promise(r=>setImmediate(r));assert(!JSON.parse(stored).lastBackup);assert(status.textContent.includes('kunne ikke'));assert(!button.disabled);
+globalThis.SporlysNative.saveBackup=async()=>({saved:true});click({action:'exportBackup'});await new Promise(r=>setImmediate(r));assert(JSON.parse(stored).lastBackup);assert(status.textContent.includes('lagret'));assert(!button.disabled);
+let cancelled=false;nativeEvents['sporlys:native-back']({preventDefault(){cancelled=true;}});assert(cancelled);assert(!modal.open);
+click({action:'start'});now=100;click({rotate:'0'});now=1200;interval();
+nativeEvents['sporlys:native-state']({detail:{isActive:false}});assert(modal.open);const saved=JSON.parse(stored).attempt;assert.equal(saved.moves,1);assert.equal(saved.elapsed,1100);
+now=7000;interval();nativeEvents['sporlys:native-state']({detail:{isActive:true}});click({action:'close'});assert(root.innerHTML.includes('0:01'),'Background time is excluded');
+cancelled=false;nativeEvents['sporlys:native-back']({preventDefault(){cancelled=true;}});assert(cancelled&&modal.open,'Back pauses an active board');
+click({action:'home'});cancelled=false;nativeEvents['sporlys:native-back']({preventDefault(){cancelled=true;}});assert(!cancelled,'Native shell may minimize from home');
+console.log('PASS: native export confirms only successful saves; cancellation/failure preserve data; native pause saves attempts; background time excluded; Android back handles dialogs/game/home.');
+
+// Exercise the exact Java filename validation against the game's chapter IDs.
+const source=fs.readFileSync('native/android/SporlysFilesPlugin.java','utf8');
+const pattern=source.match(/name\.matches\("([^"]+)"\)/)[1].replaceAll('\\\\','\\');
+const allowed=new RegExp(`^(?:${pattern})$`);
+for(const chapter of chapters)assert(allowed.test(`glimbraid-${chapter.id}.png`),`Native export rejects ${chapter.id}`);
+for(const name of ['../glimbraid-night.png','glimbraid-unknown.png','glimbraid-weave.jpg'])assert(!allowed.test(name));
+assert.equal(fs.readFileSync('android/app/src/main/java/no/bjerkholtstudio/sporlys/SporlysFilesPlugin.java','utf8'),source);
+console.log('PASS: native image whitelist accepts every chapter and rejects unknown/path filenames; native and Android sources agree.');

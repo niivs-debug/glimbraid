@@ -1,0 +1,146 @@
+Starting a Gradle Daemon, 2 incompatible Daemons could not be reused, use --status for details
+
+> Configure project :app
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Configure project :capacitor-cordova-android-plugins
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseFeatureMetadata UP-TO-DATE
+> Task :capacitor-android:preBuild UP-TO-DATE
+> Task :capacitor-android:preReleaseBuild UP-TO-DATE
+> Task :capacitor-android:generateReleaseResValues UP-TO-DATE
+> Task :capacitor-android:generateReleaseResources UP-TO-DATE
+> Task :capacitor-android:packageReleaseResources UP-TO-DATE
+> Task :capacitor-android:parseReleaseLocalResources UP-TO-DATE
+> Task :capacitor-android:generateReleaseRFile UP-TO-DATE
+> Task :capacitor-android:javaPreCompileRelease UP-TO-DATE
+> Task :capacitor-android:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :capacitor-android:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:preBuild UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:preReleaseBuild UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:generateReleaseResValues UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:generateReleaseResources UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:packageReleaseResources UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:parseReleaseLocalResources UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:generateReleaseRFile UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:javaPreCompileRelease UP-TO-DATE
+
+> Task :capacitor-plugin-cdv-purchase:compileReleaseJavaWithJavac
+Note: /workspace/scratch/d23a417f2f71/glim-work/glimbraid-mobile/node_modules/capacitor-plugin-cdv-purchase/android/src/main/java/cc/fovea/iap/PurchasePlugin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :capacitor-plugin-cdv-purchase:mergeReleaseGeneratedProguardFiles
+> Task :capacitor-android:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :capacitor-android:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:exportReleaseConsumerProguardFiles
+> Task :capacitor-cordova-android-plugins:preBuild UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:preReleaseBuild UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:generateReleaseResValues
+> Task :capacitor-cordova-android-plugins:generateReleaseResources
+> Task :capacitor-cordova-android-plugins:packageReleaseResources
+> Task :capacitor-cordova-android-plugins:javaPreCompileRelease
+> Task :capacitor-cordova-android-plugins:parseReleaseLocalResources
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:javaPreCompileRelease
+> Task :capacitor-cordova-android-plugins:generateReleaseRFile
+> Task :capacitor-cordova-android-plugins:compileReleaseJavaWithJavac NO-SOURCE
+> Task :capacitor-cordova-android-plugins:mergeReleaseGeneratedProguardFiles
+> Task :capacitor-android:writeReleaseAarMetadata
+> Task :capacitor-cordova-android-plugins:exportReleaseConsumerProguardFiles
+> Task :capacitor-cordova-android-plugins:writeReleaseAarMetadata
+> Task :capacitor-plugin-cdv-purchase:writeReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:parseReleaseLocalResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :capacitor-android:extractDeepLinksRelease
+> Task :capacitor-android:processReleaseManifest
+> Task :capacitor-cordova-android-plugins:extractDeepLinksRelease
+> Task :capacitor-cordova-android-plugins:processReleaseManifest
+> Task :capacitor-plugin-cdv-purchase:extractDeepLinksRelease
+
+> Task :capacitor-plugin-cdv-purchase:processReleaseManifest
+package="cc.fovea.iap" found in source AndroidManifest.xml: /workspace/scratch/d23a417f2f71/glim-work/glimbraid-mobile/node_modules/capacitor-plugin-cdv-purchase/android/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="cc.fovea.iap" from the source AndroidManifest.xml: /workspace/scratch/d23a417f2f71/glim-work/glimbraid-mobile/node_modules/capacitor-plugin-cdv-purchase/android/src/main/AndroidManifest.xml.
+
+> Task :app:processReleaseMainManifest
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseManifest
+> Task :app:processReleaseManifestForPackage
+> Task :capacitor-cordova-android-plugins:bundleLibCompileToJarRelease
+> Task :capacitor-plugin-cdv-purchase:bundleLibCompileToJarRelease
+> Task :capacitor-android:prepareReleaseArtProfile
+> Task :capacitor-cordova-android-plugins:prepareReleaseArtProfile
+> Task :capacitor-plugin-cdv-purchase:prepareReleaseArtProfile
+> Task :app:mergeReleaseArtProfile
+> Task :capacitor-android:bundleLibRuntimeToJarRelease
+> Task :capacitor-cordova-android-plugins:bundleLibRuntimeToJarRelease
+> Task :capacitor-plugin-cdv-purchase:bundleLibRuntimeToJarRelease
+> Task :app:extractProguardFiles
+> Task :app:processReleaseJavaRes NO-SOURCE
+> Task :capacitor-android:processReleaseJavaRes NO-SOURCE
+> Task :capacitor-cordova-android-plugins:processReleaseJavaRes NO-SOURCE
+> Task :capacitor-plugin-cdv-purchase:processReleaseJavaRes NO-SOURCE
+> Task :app:processReleaseResources
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:mergeReleaseJavaResource
+> Task :app:mergeReleaseGeneratedProguardFiles
+> Task :app:mergeReleaseStartupProfile
+> Task :app:processApplicationManifestReleaseForBundle
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:bundleReleaseResources
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :capacitor-android:mergeReleaseShaders
+> Task :capacitor-android:compileReleaseShaders NO-SOURCE
+> Task :capacitor-android:generateReleaseAssets UP-TO-DATE
+> Task :capacitor-android:packageReleaseAssets
+> Task :capacitor-cordova-android-plugins:mergeReleaseShaders
+> Task :capacitor-cordova-android-plugins:compileReleaseShaders NO-SOURCE
+> Task :capacitor-cordova-android-plugins:generateReleaseAssets UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:packageReleaseAssets
+> Task :capacitor-plugin-cdv-purchase:mergeReleaseShaders
+> Task :capacitor-plugin-cdv-purchase:compileReleaseShaders NO-SOURCE
+> Task :capacitor-plugin-cdv-purchase:generateReleaseAssets UP-TO-DATE
+> Task :capacitor-plugin-cdv-purchase:packageReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :app:mergeReleaseJniLibFolders
+> Task :capacitor-android:mergeReleaseJniLibFolders
+> Task :capacitor-android:mergeReleaseNativeLibs NO-SOURCE
+> Task :capacitor-android:copyReleaseJniLibsProjectOnly
+> Task :capacitor-cordova-android-plugins:mergeReleaseJniLibFolders
+> Task :capacitor-cordova-android-plugins:mergeReleaseNativeLibs NO-SOURCE
+> Task :capacitor-cordova-android-plugins:copyReleaseJniLibsProjectOnly
+> Task :capacitor-plugin-cdv-purchase:mergeReleaseJniLibFolders
+> Task :capacitor-plugin-cdv-purchase:mergeReleaseNativeLibs NO-SOURCE
+> Task :capacitor-plugin-cdv-purchase:copyReleaseJniLibsProjectOnly
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:writeReleaseAppMetadata
+> Task :app:collectReleaseDependencies
+> Task :app:configureReleaseDependencies
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:parseReleaseIntegrityConfig
+> Task :app:validateSigningRelease
+> Task :app:minifyReleaseWithR8
+> Task :app:buildReleasePreBundle
+> Task :app:compileReleaseArtProfile
+> Task :app:packageReleaseBundle
+> Task :app:shrinkBundleReleaseResources
+> Task :app:signReleaseBundle
+> Task :app:produceReleaseBundleIdeListingFile
+> Task :app:createReleaseBundleListingFileRedirect
+> Task :app:bundleRelease
+
+BUILD SUCCESSFUL in 1m 11s
+98 actionable tasks: 81 executed, 17 up-to-date

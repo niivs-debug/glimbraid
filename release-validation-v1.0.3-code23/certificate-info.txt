@@ -1,0 +1,25 @@
+Signer #1:
+
+Certificate #1:
+Owner: CN=Bjerkholt Studio, OU=Glimbraid, O=Bjerkholt Studio, L=Arendal, C=NO
+Issuer: CN=Bjerkholt Studio, OU=Glimbraid, O=Bjerkholt Studio, L=Arendal, C=NO
+Serial number: 1654596dd162c202
+Valid from: Fri Oct 09 01:08:18 YEKT 2026 until: Tue Feb 24 01:08:18 YEKT 2054
+Certificate fingerprints:
+	 SHA1: 5B:EE:8E:D6:23:A6:2D:1E:C4:D5:C1:DC:DE:9C:AB:E1:23:C7:A4:35
+	 SHA256: B8:DB:81:4A:76:19:98:2E:77:E0:E4:8E:78:4D:61:22:6F:5E:46:E8:AE:0B:EC:EB:4B:FE:08:D8:FC:77:07:32
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 4096-bit RSA key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: DD 57 AD 25 DD 0C F7 D2   9D 39 03 16 1F FC 17 FA  .W.%.....9......
+0010: 1A 43 E3 12                                        .C..
+]
+]
+
+

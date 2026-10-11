@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import {chapterSummary,drawChapterCard,deliverCard} from '../dist/chapter-card.mjs';
+import {chapters} from '../dist/engine.mjs';
+const progress={completed:Array.from({length:36},(_,i)=>i+1),hintBalance:9,lang:'en'};
+const summary=chapterSummary({name:'Ada',symbol:4,hat:'frost'},progress,chapters[2]);assert.equal(summary.count,12);assert.equal(summary.hats,3);assert.equal(summary.hints,9);assert.throws(()=>chapterSummary({name:'Ada',symbol:4},progress,chapters[3]));
+let texts=[],images=[];const context=new Proxy({createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}}),measureText:text=>({width:text.length*10}),drawImage:image=>images.push(image),fillText:text=>texts.push(text)},{get:(o,k)=>k in o?o[k]:()=>{}});
+const canvas={getContext:()=>context,toDataURL:()=> 'data:image/png;base64,iVBORw0KGgo='};await drawChapterCard(summary,{canvas,loadImage:async p=>p});assert.equal(canvas.width,1080);assert.equal(canvas.height,1350);assert(texts.includes('Ada'));assert(texts.includes('12/12'));assert(texts.includes('3'));assert(texts.includes('9'));assert(texts.includes('Levels 25–36'));assert(images.includes('characters/hare.png'));assert(images.includes('characters/hat-frost.png'));assert(images.includes('glimbraid-wordmark-card.png'));
+const prepared={canvas,dataUrl:canvas.toDataURL(),name:'glimbraid-frost.png',snapshot:summary};let sent;
+globalThis.SporlysNative={shareImage:async p=>sent=p,saveImage:async()=>({saved:false})};assert.equal(await deliverCard(prepared),'opened');assert.equal(sent.name,prepared.name);assert.equal(sent.content,'iVBORw0KGgo=');assert.equal(await deliverCard(prepared,true),'cancelled');
+globalThis.SporlysNative.saveImage=async()=>({saved:true});assert.equal(await deliverCard(prepared,true),'saved');globalThis.SporlysNative.shareImage=async()=>{throw Error('unavailable')};await assert.rejects(()=>deliverCard(prepared));delete globalThis.SporlysNative;
+Object.defineProperty(globalThis,'navigator',{value:{canShare:()=>true,share:async p=>sent=p},configurable:true});globalThis.File=class extends Blob{constructor(data,name,options){super(data,options);this.name=name}};assert.equal(await deliverCard(prepared),'opened');assert.equal(sent.files[0].name,prepared.name);assert.equal(sent.files[0].type,'image/png');navigator.share=async()=>{const e=Error('cancel');e.name='AbortError';throw e};assert.equal(await deliverCard(prepared),'cancelled');
+let downloaded;navigator.canShare=()=>false;globalThis.document={createElement:()=>({click(){downloaded=this.download}})};const timer=setTimeout;globalThis.setTimeout=fn=>fn();assert.equal(await deliverCard(prepared),'saved');assert.equal(downloaded,prepared.name);globalThis.setTimeout=timer;
+console.log('PASS: chapter eligibility, snapshot statistics, real artwork selection, card dimensions, native sharing/saving, cancellation, file sharing and download fallback.');
+
+// Old completed chapters remain shareable; opening a card does not mutate progress.
+const events={},root={innerHTML:'',classList:{toggle(){}}},modal={innerHTML:'',open:false,showModal(){this.open=true},close(){this.open=false},addEventListener(){}};
+const preview={innerHTML:''},status={textContent:''},shareButton={disabled:true},saveButton={disabled:true};
+const d={version:1,lang:'en',sound:true,ambience:false,haptics:true,showTime:true,completed:progress.completed,records:{36:{time:1000,moves:12}},last:36,hintBalance:9,hintBaseUsed:{}};
+let stored=JSON.stringify({...d,profiles:[{id:'p',name:'Ada',symbol:4,hat:'frost',data:d}],activeProfile:'p'});
+globalThis.document={hidden:false,documentElement:{lang:'en'},createElement:()=>canvas,querySelector:s=>s==='#app'?root:s==='#modal'?modal:s==='.world-lights'?{innerHTML:''}:s==='#chapterCardPreview'?preview:s==='#cardStatus'?status:s==='[data-action="shareChapterCard"]'?shareButton:s==='[data-action="saveChapterCard"]'?saveButton:null,addEventListener:(k,f)=>events[k]=f};
+globalThis.localStorage={getItem:()=>stored,setItem:(_,v)=>stored=v};globalThis.setInterval=()=>{};navigator.language='en';globalThis.Image=class{set src(v){queueMicrotask(()=>this.onload())}};
+const click=dataset=>events.click({target:{closest:()=>({dataset,disabled:false})}});
+await import('../dist/app.mjs?card-flow');assert(root.innerHTML.includes('<small>Level 37</small>'));click({action:'levels'});assert(!root.innerHTML.includes('data-action="chapterCard"'));click({chapter:'frost'});assert(root.innerHTML.includes('data-action="chapterCard"'));
+const before=JSON.parse(stored);click({action:'chapterCard'});await new Promise(r=>setImmediate(r));assert(modal.open);assert(preview.innerHTML.includes('<img'));assert(!shareButton.disabled);assert(!saveButton.disabled);assert.deepEqual(JSON.parse(stored).completed,before.completed);assert.deepEqual(JSON.parse(stored).records,before.records);
+globalThis.SporlysNative={shareImage:async p=>sent=p};click({action:'shareChapterCard'});await new Promise(r=>setImmediate(r));assert.equal(sent.name,'glimbraid-frost.png');assert(status.textContent.includes('Sharing menu'));
+click({action:'dialogBack'});assert(!modal.open);assert(root.innerHTML.includes('Frostlight'));assert.deepEqual(JSON.parse(stored).completed,before.completed);
+console.log('PASS: old chapter cards preview, share and return without altering progress; next chapter remains correctly unlocked.');

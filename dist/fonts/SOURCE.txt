@@ -1,0 +1,4 @@
+Noto Sans JP/KR Regular, Sans 2.004
+Source: https://github.com/notofonts/noto-cjk/tree/main/Sans/SubsetOTF
+License: SIL Open Font License 1.1, see OFL-Noto.txt.
+Converted to WOFF2, family names changed to Glimbraid JP/KR. Glyph coverage preserved.

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {scoreRows,recordResult} from '../dist/records.mjs';
+import {chapters} from '../dist/engine.mjs';
+const records=(time,moves,n=12)=>Object.fromEntries(Array.from({length:n},(_,i)=>[i+1,{time,moves}]));
+const player=(id,name,time,moves,n=12)=>({id,name,symbol:0,hat:'none',data:{records:records(time,moves,n)}});
+const players=[player('a','Ada',1000,5),player('b','Ben',2000,3),player('c','Cam',1000,5),player('d','Dee',500,1,8),player('e','Eli',0,0,0),player('f','Fox',1000,6)];
+const options={chapter:chapters[0],metric:'time'};let rows=scoreRows(players,options);
+assert.equal(rows.length,6);assert.deepEqual(rows.map(p=>p.rank),[1,1,1,4,null,null]);assert.equal(rows[0].value,12000);assert.equal(rows[4].count,8);assert.equal(rows[4].value,null);assert.equal(rows[5].count,0);
+rows=scoreRows(players,{...options,metric:'moves'});assert.equal(rows[0].id,'b');assert.equal(rows[0].value,36);assert.deepEqual(rows.map(p=>p.rank),[1,2,2,4,null,null]);
+const before=JSON.stringify(players);scoreRows(players,options);assert.equal(JSON.stringify(players),before,'Ranking must not mutate profiles');
+players[0].data.records[1]=recordResult(players[0].data.records[1],500,9).record;rows=scoreRows(players,options);assert.equal(rows[0].id,'a');assert.equal(rows[0].value,11500);assert.equal(scoreRows(players,{...options,metric:'moves'}).find(p=>p.id==='a').value,60,'Independent best moves survive faster attempt');
+players[3].data.records[9]=recordResult(undefined,100,1,true).record;assert.equal(scoreRows(players,options).find(p=>p.id==='d').count,8,'Hinted attempt creates no eligible record');
+assert.equal(scoreRows(players,{chapter:chapters[1],metric:'time'}).every(p=>p.rank===null&&p.count===0),true,'Chapter boundaries are independent');
+assert.equal(scoreRows(players,{levelId:1,metric:'time'}).length,6);players[4].data.records[1]={time:NaN,moves:3};assert.equal(scoreRows(players,{levelId:1}).find(p=>p.id==='e').value,null);
+console.log('PASS: six players, chapter bounds, independent totals, ties, missing records, replay improvements, hint exclusion and no profile mutation.');

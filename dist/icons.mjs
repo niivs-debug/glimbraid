@@ -1,0 +1,2 @@
+const paths={back:'M15 5L8 12l7 7',close:'M6 6l12 12M18 6L6 18',pause:'M8 5v14M16 5v14',undo:'M9 5L4 10l5 5M4 10h9a7 7 0 010 14',restart:'M20 7V3l-4 4M20 7a8 8 0 10.3 9',hint:'M12 3l9 9-9 9-9-9z',help:'M9 8a3 3 0 116 0c0 2-3 2-3 5M12 17v1',settings:'M9 3h6l1 4 4 1v8l-4 1-1 4H9l-1-4-4-1V8l4-1z M15 12a3 3 0 11-6 0 3 3 0 016 0'};
+export const icon=name=>`<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.help}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;

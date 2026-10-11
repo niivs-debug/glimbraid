@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {createPurchases,PRODUCT_ID} from '../dist/purchases.mjs';
+const cache=new Map(),storage={getItem:k=>cache.get(k),setItem:(k,v)=>cache.set(k,v),removeItem:k=>cache.delete(k)};
+let send,orders=0,restores=0;
+const bridge={platform:'android',initialize:async(id,cb)=>{assert.equal(id,PRODUCT_ID);send=cb;cb({kind:'product',price:'39,00 kr'});},buy:async()=>{orders++;send({kind:'pending'});},restore:async()=>{restores++;send({kind:'entitlement',owned:true});}};
+const p=createPurchases({bridge,storage});await p.initialize();
+assert(p.canPlay(1)&&p.canPlay(12));assert(!p.canPlay(13)&&!p.canPlay(96)&&!p.canPlay(97));
+assert.equal(p.state.price,'39,00 kr');await p.buy();assert.equal(orders,1);assert(!p.state.owned);await p.buy();assert.equal(orders,1,'Pending payment cannot be ordered twice');
+send({kind:'error',cancelled:true});assert(!p.state.owned);await p.buy();assert.equal(orders,2);
+send({kind:'entitlement',owned:true});assert(p.canPlay(96));await p.buy();assert.equal(orders,2,'Already owned cannot be bought again');send({kind:'pending'});assert.equal(p.state.status,'fullGameActive');
+const offline=createPurchases({bridge:{platform:'android',initialize:async()=>{throw Error('offline');}},storage});await offline.initialize();assert(offline.canPlay(96),'Confirmed ownership survives offline restart');
+const apple=createPurchases({bridge:{platform:'ios'},storage});assert(!apple.canPlay(13),'Google Play cache cannot unlock Apple');
+const web=createPurchases({storage});assert(!web.canPlay(13),'Device cache cannot unlock web edition');
+send({kind:'entitlement',owned:false});assert(!p.canPlay(13));assert(!createPurchases({bridge,storage}).canPlay(13),'Authoritative revocation clears offline cache');
+await p.restore();assert.equal(restores,1);assert(p.canPlay(96));
+send({kind:'error'});assert(p.canPlay(96),'Transient error does not revoke a confirmed purchase');
+console.log('PASS: free boundary, permanent full access, localized price, pending/cancel guards, duplicate buy, restore, offline, revocation and store isolation.');

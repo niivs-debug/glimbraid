@@ -1,0 +1,48 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> sporlys-mobile@0.1.0 test
+> node tools/test-all.mjs
+
+PASS: all 96 boards choose their chapter palette, all eight palettes differ, tile count and light colors retained.
+PASS: review rejects invalid codes, separates player data, preserves unpaid ownership, blocks store operations and restores the free limit after exit.
+PASS: invalid PNG and failed export produce a safe diagnostic code; successful export is preserved; unavailable canvas is identified.
+PASS: six players, chapter bounds, independent totals, ties, missing records, replay improvements, hint exclusion and no profile mutation.
+PASS: free boundary, permanent full access, localized price, pending/cancel guards, duplicate buy, restore, offline, revocation and store isolation.
+PASS: free-chapter reward precedes paywall; restore opens level 13 without changing progress; revocation pauses paid play; free chapter remains accessible; purchase is separate from backup.
+PASS: native adapter uses store price, finishes before ownership refresh, rejects cancellation, preserves ownership on query errors, and restores authoritative state.
+PASS: bundled Japanese/Korean WOFF2 assets, export font selection and awaited font loading; unavailable fonts reject instead of exporting missing glyphs.
+PASS: 15 complete language catalogues, 277 keys each, placeholders, chapter names/rewards, locale detection and backup acceptance/rejection.
+PASS: language selection, translated settings/help/about/players/backup/hints and reload for every supported language.
+PASS: 96 solvable levels, gate dependency, colour isolation, language parity, game flow, pause timing, settings, hints, no assisted records, progression and storage.
+PASS: named deletion confirmation, cancel/close guards, inactive deletion isolation, final-player reset, reload and storage failure.
+PASS: deleting active player selects survivor and removes deleted attempt without changing survivor records.
+PASS: 12 new 6x6 layouts, three isolated colours, staged gates/frost, legal hints on 480 scrambles, old progress, eight prizes, backup and Lightweave card.
+PASS: old 84-level player continues at 85 with records, hint bank and equipment preserved.
+PASS: eight chapter prizes have their own local asset and name in both languages.
+PASS: hint banking, basic-first spending, restart/reload, player isolation, legacy migration, no replay farming, backup validation.
+PASS: bank ceiling 10, completion of 48 unlocks capacity15 without free hints, clamped earnings and legacy banks.
+PASS: all chapter rewards, legacy eligibility, shared figures, draft/cancel/save, reload, separate equipment, backup and unearned prize rejection.
+PASS: 12 distinct 5x5 levels, increasing route length, three isolated colours, gate/freeze stages, legal hint solutions and old 36-level progress.
+PASS: 12 new 5x5 layouts, three isolated colours, staged gates/frost, legal hints on 480 scrambles, old progress, five prizes, backup and Aurora card.
+PASS: old 48-level player continues at 49 with records, hint bank and equipment preserved.
+PASS: 12 new 5x5/6x6 layouts, three isolated colours, staged gates/frost, legal hints on 480 scrambles, old progress, six prizes, backup and Star depths card.
+PASS: old 60-level player continues at 61 with records, hint bank and equipment preserved.
+PASS: 6x6 renders 36 tiles with a localized two-colour introduction.
+PASS: 12 new 6x6 layouts, three isolated colours, staged gates/frost, legal hints on 480 scrambles, old progress, seven prizes, backup and Sun crown card.
+PASS: old 72-level player continues at 73 with records, hint bank and equipment preserved.
+PASS: seven chapter prizes have their own local asset and name in both languages.
+PASS: chapter eligibility, snapshot statistics, real artwork selection, card dimensions, native sharing/saving, cancellation, file sharing and download fallback.
+PASS: old chapter cards preview, share and return without altering progress; next chapter remains correctly unlocked.
+PASS: 66240 relevant suggestions across all 96 levels; filler tracks never selected, solved layouts never changed, hints converge.
+PASS: legacy migration, independent profiles, switching, escaped names, leaderboard, name validation, six-profile cap, reload persistence.
+PASS: invalid import leaves storage intact, valid import previews before explicit restore.
+PASS: downloadable backup includes all profiles; failed restore write preserves active state.
+PASS: backup roundtrip, format/version, profile identity, limits, records and setting validation.
+PASS: saved attempts survive reload with time, moves, hints and rotations; restart resets; nested menus return; both level views; backups retain attempts; frozen tile hints thaw first.
+PASS: chapter action priority, result details, prize equip and next flow, locked requirements, removed greeting, hint charging, and restart cancellation preserve progress.
+PASS: home/level navigation resets the document viewport; icon remains in every home render; menus, moves, pause and saved attempt are preserved. Actual browser/mobile confirmation still required.
+PASS: eight distinct ambient profiles, same-chapter reuse, chapter transitions release every loop, mute/pause release sources, independent effects, one audio context. Physical listening still required.
+PASS: chapter selection, large board, pause/resume and home select the right ambience.
+PASS: native export confirms only successful saves; cancellation/failure preserve data; native pause saves attempts; background time excluded; Android back handles dialogs/game/home.
+PASS: native image whitelist accepts every chapter and rejects unknown/path filenames; native and Android sources agree.
+PASS: previous 30-level progress and backup survive; level 31 unlocks; six new frozen boards solve in legal order.

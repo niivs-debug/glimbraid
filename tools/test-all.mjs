@@ -1,0 +1,4 @@
+import {spawnSync} from 'node:child_process';
+for(const name of ['chapter-colors-check','review-access-check','card-export-check','category-scores-check','purchases-check','purchase-flow-check','purchase-native-check','fonts-check','i18n-check','verify','delete-player-check','weave-extension-check','hint-bank-check','avatars-check','rav-extension-check','aurora-extension-check','stellar-extension-check','solar-extension-check','chapter-card-check','hints-check','profiles-check','backup-check','continuity-check','ui-refinement-check','navigation-check','audio-check','native-check','frost-extension-check']){
+ const r=spawnSync(process.execPath,[...(name==='purchases-check'||name==='purchase-flow-check'||name==='purchase-native-check'?[]:['--import','./tests/full-access-fixture.mjs']),`tests/${name}.mjs`],{stdio:'inherit'});if(r.status!==0)process.exit(r.status||1);
+}
