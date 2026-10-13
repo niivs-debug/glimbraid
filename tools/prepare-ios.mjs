@@ -1,9 +1,9 @@
 import {readFile,writeFile,copyFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 execFileSync('npx',['cap','sync','ios'],{stdio:'inherit'});
-for(const name of ['GlimbraidBillingState','GlimbraidViewController'])await copyFile(`native/ios/${name}.swift`,`ios/App/App/${name}.swift`);
+for(const name of ['GlimbraidBillingState','GlimbraidViewController','SporlysFilesPlugin'])await copyFile(`native/ios/${name}.swift`,`ios/App/App/${name}.swift`);
 const project='ios/App/App.xcodeproj/project.pbxproj';let s=await readFile(project,'utf8');
-for(const [i,name] of ['GlimbraidBillingState','GlimbraidViewController'].entries()){
+for(const [i,name] of ['GlimbraidBillingState','GlimbraidViewController','SporlysFilesPlugin'].entries()){
  const ref=`A0160000000000000000000${i}`,build=`B0160000000000000000000${i}`;
  if(!s.includes(ref)){
   s=s.replace('/* End PBXBuildFile section */',`${build} /* ${name}.swift in Sources */ = {isa = PBXBuildFile; fileRef = ${ref}; };\n/* End PBXBuildFile section */`);
