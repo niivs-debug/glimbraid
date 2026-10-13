@@ -1,0 +1,66 @@
+workflows:
+  glimbraid-ios-testflight:
+    name: Glimbraid - iOS IPA and TestFlight upload
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: no.bjerkholtstudio.sporlys
+      node: 22
+      xcode: "26.0"
+      cocoapods: default
+    scripts:
+      - name: Install app dependencies
+        script: npm ci
+      - name: Prepare shared app and Capacitor iOS project
+        script: npm run prepare:ios
+      - name: Set and verify iOS release identity
+        script: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          release = json.loads(Path('android-release.json').read_text())
+          assert release['packageName'] == 'no.bjerkholtstudio.sporlys'
+          project = Path('ios/App/App.xcodeproj/project.pbxproj')
+          source = project.read_text()
+          build = int(release['versionCode']) + int(os.environ['BUILD_NUMBER']) + 1
+          fields = {
+              'PRODUCT_BUNDLE_IDENTIFIER': release['packageName'],
+              'MARKETING_VERSION': release['versionName'],
+              'CURRENT_PROJECT_VERSION': str(build),
+              'IPHONEOS_DEPLOYMENT_TARGET': '15.0',
+          }
+          for field, value in fields.items():
+              source, count = re.subn(r'\b' + field + r' = [^;]+;', field + ' = ' + value + ';', source)
+              assert count >= 2, 'Missing Xcode release setting: ' + field
+          project.write_text(source)
+          assert "platform==='ios'?Platform.APPLE_APPSTORE:Platform.GOOGLE_PLAY" in Path('native/purchases.js').read_text()
+          assert "PRODUCT_ID='glimbraid_full_game'" in Path('dist/purchases.mjs').read_text()
+          for name in ['GlimbraidBillingState', 'GlimbraidViewController']:
+              assert name + '.swift in Sources' in source
+          for name in ['app.mjs', 'style.css', 'purchases.mjs']:
+              assert Path('dist', name).read_bytes() == Path('ios/App/App/public', name).read_bytes()
+          print('Glimbraid iOS:', release['versionName'], 'build', build, '- App Store purchases')
+          PY
+      - name: Run shared regression checks
+        script: npm test
+      - name: Apply App Store signing profiles
+        script: xcode-project use-profiles
+      - name: Build signed IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "$CM_BUILD_DIR/ios/App/App.xcworkspace" \
+            --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - "$HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM"
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
