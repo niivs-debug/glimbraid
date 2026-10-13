@@ -23,7 +23,7 @@ public class SporlysFilesPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDe
          host.presentedViewController == nil else {
     call.reject("File picker cannot be shown"); return
    }
-   let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString(), isDirectory: true)
+   let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
    do {
     try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
     let file = folder.appendingPathComponent(name)
