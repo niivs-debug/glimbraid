@@ -1,7 +1,7 @@
 export const PRODUCT_ID='glimbraid_full_game';
 export const FREE_LEVELS=12;
 // This cache belongs to the installation and store, never to a player/backup.
-export function createPurchases({bridge,storage=bridge?.storage??globalThis.localStorage,reviewAccess}={}){
+export function createPurchases({bridge,storage=bridge?.storage??globalThis.localStorage}={}){
  const native=!!bridge?.platform;
  const key='glimbraid.entitlement.v1.'+(bridge?.platform||'web');
  let owned=false;try{owned=native&&JSON.parse(storage?.getItem(key)||'null')?.product===PRODUCT_ID;}catch{}
@@ -19,9 +19,9 @@ export function createPurchases({bridge,storage=bridge?.storage??globalThis.loca
  };
  const initialize=async()=>{if(!native)return;try{await bridge.initialize(PRODUCT_ID,receive);}catch{emit({status:'storeUnavailable',busy:false});}};
  async function run(operation){
-  if(reviewAccess?.active||state.busy||!native||(operation==='buy'&&(state.owned||!state.available||state.status==='storePending')))return;
+  if(state.busy||!native||(operation==='buy'&&(state.owned||!state.available||state.status==='storePending')))return;
   emit({busy:true,status:operation==='buy'?'storeBuying':'storeRestoring'});
   try{await bridge[operation]();}catch(e){emit({busy:false,status:e?.cancelled?'storeCancelled':'storeError'});}
  }
- return {get state(){return {...state};},canPlay:id=>Number.isInteger(id)&&id>=1&&id<=96&&(id<=FREE_LEVELS||state.owned||reviewAccess?.active),subscribe:f=>{listeners.add(f);return()=>listeners.delete(f);},initialize,buy:()=>run('buy'),restore:()=>run('restore')};
+ return {get state(){return {...state};},canPlay:id=>Number.isInteger(id)&&id>=1&&id<=96&&(id<=FREE_LEVELS||state.owned),subscribe:f=>{listeners.add(f);return()=>listeners.delete(f);},initialize,buy:()=>run('buy'),restore:()=>run('restore')};
 }

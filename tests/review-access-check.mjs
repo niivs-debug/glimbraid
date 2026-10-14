@@ -1,21 +1,37 @@
 import assert from 'node:assert/strict';
-import {createReviewAccess} from '../dist/review-access.mjs';
-import {createPurchases} from '../dist/purchases.mjs';
-const cache=new Map([['sporlys.progress.v1','original-player-data']]);
+import fs from 'node:fs';
+import {retireReviewAccess} from '../dist/entitlement-migration.mjs';
+import {createPurchases,PRODUCT_ID} from '../dist/purchases.mjs';
+import {validAttempt} from '../dist/attempt.mjs';
+import {levels} from '../dist/engine.mjs';
+const cache=new Map([
+ ['glimbraid.review.active.v1','active'],
+ ['glimbraid.review.progress.v1','sandbox progress'],
+ ['sporlys.progress.v1','normal player progress'],
+ ['glimbraid.entitlement.v1.ios',JSON.stringify({product:PRODUCT_ID})]
+]);
 const storage={getItem:k=>cache.get(k),setItem:(k,v)=>cache.set(k,v),removeItem:k=>cache.delete(k)};
-let review=createReviewAccess({storage});
-assert.equal(await review.activate('invalid-code'),false);
-assert.equal(review.active,false);assert.equal(review.progressKey,'sporlys.progress.v1');
-cache.set('glimbraid.review.active.v1','active');review=createReviewAccess({storage});
-assert.equal(review.progressKey,'glimbraid.review.progress.v1');
-let buys=0,restores=0;
-const bridge={platform:'android',initialize:async(_,send)=>{send({kind:'product',price:'39 kr'});send({kind:'entitlement',owned:false});},buy:async()=>{buys++;},restore:async()=>{restores++;}};
-const p=createPurchases({bridge,storage,reviewAccess:review});await p.initialize();
-assert.equal(p.state.owned,false);assert(p.canPlay(96));assert(!p.canPlay(97));
-await p.buy();await p.restore();assert.equal(buys+restores,0,'Review never triggers store transactions');
-storage.setItem(review.progressKey,'test-player-data');review.end();
-assert.equal(p.canPlay(96),false);assert(p.canPlay(12));assert.equal(cache.get('sporlys.progress.v1'),'original-player-data');
-assert.equal(cache.get('glimbraid.entitlement.v1.android'),undefined);
-assert.equal(createReviewAccess({storage}).active,false);
-assert.equal(createReviewAccess({storage:{getItem(){throw Error('blocked');}}}).active,false);
-console.log('PASS: review rejects invalid codes, separates player data, preserves unpaid ownership, blocks store operations and restores the free limit after exit.');
+retireReviewAccess(storage);
+assert(!cache.has('glimbraid.review.active.v1'));
+assert.equal(cache.get('glimbraid.review.progress.v1'),'sandbox progress');
+assert.equal(cache.get('sporlys.progress.v1'),'normal player progress');
+assert.equal(JSON.parse(cache.get('glimbraid.entitlement.v1.ios')).product,PRODUCT_ID);
+assert.doesNotThrow(()=>retireReviewAccess({removeItem(){throw Error('blocked');}}));
+let send,buys=0,restores=0;
+const bridge={platform:'ios',initialize:async(_,cb)=>{send=cb;send({kind:'product',price:'39 kr'});send({kind:'entitlement',owned:false});},buy:async()=>{buys++;send({kind:'error',cancelled:true});},restore:async()=>{restores++;send({kind:'entitlement',owned:true});}};
+// A stale API object, even if injected, is never considered an entitlement.
+const p=createPurchases({bridge,storage,reviewAccess:{active:true}});
+await p.initialize();assert(p.canPlay(12));assert(!p.canPlay(13));assert(!p.canPlay(96));
+await p.buy();assert.equal(buys,1);assert(!p.state.owned);
+await p.restore();assert.equal(restores,1);assert(p.canPlay(96));
+const offline=createPurchases({bridge:{platform:'ios',initialize:async()=>{throw Error('offline');}},storage});
+await offline.initialize();assert(offline.canPlay(96));
+send({kind:'entitlement',owned:false});assert(!p.canPlay(13));
+const a={level:13,rot:[...levels[12].initial],moves:0,elapsed:0,history:[],hintsUsed:0,assisted:false,practice:false,started:false};
+assert.equal(validAttempt(a,levels,[],true),null,'Old review flag cannot bypass sequential progress');
+const app=fs.readFileSync('dist/app.mjs','utf8');
+assert(!/reviewAccess|reviewView|activateReview|endReview/.test(app));
+assert(app.indexOf('retireReviewAccess();')<app.indexOf('const KEY='));
+const retired=await import('../dist/review-access.mjs');assert.equal(Object.keys(retired).length,0);
+assert(!/HASH|activate|crypto/.test(fs.readFileSync('dist/review-access.mjs','utf8')));
+console.log('PASS: retired code access cannot unlock levels or block Apple purchases; migration preserves player data and real purchase cache; restore, offline access and revocation work.');
